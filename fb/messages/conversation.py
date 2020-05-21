@@ -9,6 +9,7 @@ class conversation:
         self.__thread_path = None
 
         self.__messages_per_participants = None
+        self.__characters_per_participant = None
         self.__total_messages = None
 
 
@@ -20,6 +21,7 @@ class conversation:
 
         self.__messages = self.__messages_json['messages']
         self.__participants = self.__messages_json['participants']
+
 
 
     def __str__(self):
@@ -54,6 +56,22 @@ class conversation:
                         self.__messages_per_participants[m['sender_name']] = 1
 
         return self.__messages_per_participants
+
+    def get_characters_per_participant(self):
+        if self.__characters_per_participant is  None:
+            self.__characters_per_participant = {}
+            for p in self.__participants:
+                self.__characters_per_participant[p['name']] = 0
+
+            msg_types = ['Generic']
+            for m in self.__messages:
+                if m['type'] in msg_types and 'content' in m:
+                    if m['sender_name'] in self.__characters_per_participant:
+                        self.__characters_per_participant[m['sender_name']] += len(m['content'])
+                    else:
+                        self.__characters_per_participant[m['sender_name']] = 1
+
+        return self.__characters_per_participant
 
     def getTotalMessages(self):
         msgs_per_person = self.get_messages_per_participants()

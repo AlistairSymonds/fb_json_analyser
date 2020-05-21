@@ -4,6 +4,7 @@ from datetime import datetime
 import fb.fb_data
 import fb.messages.conversation
 import numpy as np
+from pprint import pprint
 
 def main(fb_data_directory: Path):
     data = fb.fb_data.fb_data(fb_data_directory)
@@ -14,6 +15,8 @@ def main(fb_data_directory: Path):
 
     for i in range(40):
         print(f"Thread: {msgs_sorted[i].getTitle()} has {msgs_sorted[i].getTotalMessages()} messages")
+        pprint(msgs_sorted[i].get_messages_per_participants())
+        pprint(msgs_sorted[i].get_characters_per_participant())
 
 
 if __name__ == '__main__':
